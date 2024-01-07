@@ -1,0 +1,17 @@
+/* Copyright.css */
+
+.copyright-container {
+    background-color: #1e1f22; /* 灰色背景 */
+    color: #ffffff; /* 白色文字 */
+    padding: 20px;
+    text-align: center;
+}
+
+.copyright-content {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.copyright-content p {
+    margin: 10px 0;
+}
