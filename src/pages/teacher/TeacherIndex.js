@@ -17,6 +17,11 @@ import Excel2Pdf from "../../conponents/FileHandler/Excel2Pdf";
 import Excel2Docx from "../../conponents/FileHandler/Excel2Docx";
 import Pdf2Excel from "../../conponents/FileHandler/Pdf2Excel";
 import LanguageTranslation from "../../conponents/Translation/LanguageTranslation";
+import TeacherProfile from "../../conponents/TeacherHandler/TeacherProfile";
+import HistChart from "../../conponents/ChartHandler/HistChart";
+import PieChart from "../../conponents/ChartHandler/PieChart";
+import BoxChart from "../../conponents/ChartHandler/BoxChart";
+import LineChart from "../../conponents/ChartHandler/LineChart";
 
 const {Content, Footer, Sider} = Layout;
 
@@ -31,15 +36,16 @@ function getItem(label, key, icon, children) {
 
 const items = [
     getItem('用户中心', 'sub1', <UserOutlined/>, [
-        getItem('个人信息', '1'),
+        getItem('个人信息', 'teacher_profile'),
         getItem('使用统计', '2'),
         getItem('班级管理','3'),
         getItem('设置','4')
     ]),
-    getItem('表格处理', 'sub2', <PieChartOutlined/>, [
-        getItem('功能1', '5'),
-        getItem('功能2', '6'),
-        getItem('功能3', '7'),
+    getItem('图表生成', 'sub2', <PieChartOutlined/>, [
+        getItem('饼图生成', 'teacher_piechart'),
+        getItem('折线图生成', 'teacher_linechart'),
+        getItem('箱型图生成', 'teacher_boxchart'),
+        getItem('直方图生成', 'teacher_histchart'),
     ]),
     getItem('文件转换', 'sub3', <FileOutlined/>,[
         getItem('pdf转docx','teacher_pdf2docx'),
@@ -102,8 +108,14 @@ const TeacherIndex = () => {
                             教师端展现部分！！！！！！！！！！！！！！！！！
                             <Routes>
                                 {/* 用户中心 */}
+                                <Route exact path="teacher_profile" element={<TeacherProfile/>}></Route>
+
                                 {/* 文件转换模块 */}
-                                {/* 表格处理模块 */}
+                                {/* 图表生成模块 */}
+                                <Route exact path="teacher_piechart" element={<PieChart/>}/>
+                                <Route exact path="teacher_boxchart" element={<BoxChart/>}/>
+                                <Route exact path="teacher_histchart" element={<HistChart/>}/>
+                                <Route exact path="teacher_linechart" element={<LineChart/>}/>
                                 {/* 二维码生成处理模块 */}
                                 <Route exact path="teacher_qrcode_generation" element={<QRcodeGeneration/>}></Route>
                                 {/* 文件转换模块 */}

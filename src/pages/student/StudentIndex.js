@@ -18,6 +18,12 @@ import Excel2Pdf from "../../conponents/FileHandler/Excel2Pdf"
 import Excel2Docx from "../../conponents/FileHandler/Excel2Docx"
 import LanguageTranslation from "../../conponents/Translation/LanguageTranslation"
 import QRcodeGeneration from "../../conponents/QRcodeGeneration/QRcodeGeneration";
+import StudentProfile from "../../conponents/StudentHandler/StudentProfile"
+import StudentRobot from "./RobotStudent";
+import PieChart from "../../conponents/ChartHandler/PieChart";
+import BoxChart from "../../conponents/ChartHandler/BoxChart";
+import HistChart from "../../conponents/ChartHandler/HistChart";
+import LineChart from "../../conponents/ChartHandler/LineChart";
 
 
 const {Content, Footer, Sider} = Layout;
@@ -37,10 +43,11 @@ const items = [
         getItem('我的班级','student_classroom'),
         getItem('设置','student_settings')
     ]),
-    getItem('表格处理', 'sub2', <PieChartOutlined/>, [
-        getItem('功能1', '4'),
-        getItem('功能2', '5'),
-        getItem('功能3', '6'),
+    getItem('图表生成', 'sub2', <PieChartOutlined/>, [
+        getItem('饼图生成', 'student_piechart'),
+        getItem('折线图生成', 'student_linechart'),
+        getItem('箱型图生成', 'student_boxchart'),
+        getItem('直方图生成', 'student_histchart'),
     ]),
     getItem('文件转换', 'sub3', <FileOutlined/>,[
         getItem('pdf转docx','student_pdf2docx'),
@@ -50,8 +57,8 @@ const items = [
     ]),
     getItem('二维码生成','student_qrcode_generation',<AppstoreOutlined />),
     getItem('机器翻译', 'student_translation', <DesktopOutlined/>),
-    getItem('聊天机器人', '11', <TeamOutlined/>, [
-        getItem('机器人1', '12'),
+    getItem('聊天机器人', 'student_robot', <TeamOutlined/>, [
+        getItem('机器人1', 'student_robot'),
         getItem('机器人2', '13')
     ]),
 ];
@@ -103,8 +110,13 @@ const StudentIndex = () => {
                             学生端展现部分！！！！！！！！！！！！！！！！！
                             <Routes>
                                 {/* 用户中心 */}
+                                <Route exact path="student_profile" element={<StudentProfile/>}></Route>
                                 {/* 文件转换模块 */}
-                                {/* 表格处理模块 */}
+                                {/* 图表生成模块 */}
+                                <Route exact path="student_piechart" element={<PieChart/>}/>
+                                <Route exact path="student_boxchart" element={<BoxChart/>}/>
+                                <Route exact path="student_histchart" element={<HistChart/>}/>
+                                <Route exact path="student_linechart" element={<LineChart/>}/>
                                 {/* 二维码生成处理模块 */}
                                 <Route exact path="student_qrcode_generation" element={<QRcodeGeneration/>}></Route>
                                 {/* 文件转换模块 */}
@@ -116,6 +128,9 @@ const StudentIndex = () => {
                                 {/* 机器翻译模块 */}
                                 <Route exact path="student_translation" element={<LanguageTranslation/>}/>
                                 {/* 聊天机器人模块 */}
+                                <Route exact path="student_robot" element={<StudentRobot/>}/>
+
+
                             </Routes>
                         </div>
                     </Content>

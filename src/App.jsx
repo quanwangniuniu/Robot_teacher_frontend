@@ -12,6 +12,14 @@ import Excel2Pdf from "./conponents/FileHandler/Excel2Pdf"
 import LanguageTranslation from './conponents/Translation/LanguageTranslation'
 import QRcodeGeneration from "./conponents/QRcodeGeneration/QRcodeGeneration";
 import TeacherIndex from "./pages/teacher/TeacherIndex";
+import StudentProfile from "./conponents/StudentHandler/StudentProfile"
+import TeacherProfile from "./conponents/TeacherHandler/TeacherProfile";
+import StudentRobot from "./pages/student/RobotStudent";
+import PieChart from "./conponents/ChartHandler/PieChart";
+import BoxChart from "./conponents/ChartHandler/BoxChart";
+import HistChart from "./conponents/ChartHandler/HistChart";
+import LineChart from "./conponents/ChartHandler/LineChart";
+
 
 
 
@@ -29,6 +37,13 @@ function App() {
                         <Route path={'student_pdf2excel'} element={<Pdf2Excel />}></Route>
                         <Route path={'student_translation'} element={<LanguageTranslation />}></Route>
                         <Route path={'student_qrcode_generation'} element={<QRcodeGeneration/>}></Route>
+                        <Route path={'student_profile'} element={<StudentProfile/>}></Route>
+                        <Route path={'student_robot'} element={<StudentRobot/>}></Route>
+                        <Route path={'student_piechart'} element={<PieChart/>}></Route>
+                        <Route path={'student_boxchart'} element={<BoxChart/>}></Route>
+                        <Route path={'student_histchart'} element={<HistChart/>}></Route>
+                        <Route path={'student_linechart'} element={<LineChart/>}></Route>
+
                     </>
                 }>
                 </Route>
@@ -40,6 +55,12 @@ function App() {
                         <Route path={'teacher_pdf2excel'} element={<Pdf2Excel />}></Route>
                         <Route path={'teacher_translation'} element={<LanguageTranslation />}></Route>
                         <Route path={'teacher_qrcode_generation'} element={<QRcodeGeneration/>}></Route>
+                        <Route path={'teacher_profile'} element={<TeacherProfile/>}></Route>
+                        <Route path={'teacher_piechart'} element={<PieChart/>}></Route>
+                        <Route path={'teacher_boxchart'} element={<BoxChart/>}></Route>
+                        <Route path={'teacher_histchart'} element={<HistChart/>}></Route>
+                        <Route path={'teacher_linechart'} element={<LineChart/>}></Route>
+
                     </>
                 }>
                 </Route>
