@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {useNavigate} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {useLocation, useNavigate} from "react-router-dom";
 import {
     AppstoreOutlined,
     DesktopOutlined,
@@ -24,45 +24,74 @@ import PieChart from "../../conponents/ChartHandler/PieChart";
 import BoxChart from "../../conponents/ChartHandler/BoxChart";
 import HistChart from "../../conponents/ChartHandler/HistChart";
 import LineChart from "../../conponents/ChartHandler/LineChart";
+import NewRobot from "../../conponents/NewRobot/NewRobot";
+import config from "../../api/config";
 
 
-const {Content, Footer, Sider} = Layout;
 
-function getItem(label, key, icon, children) {
-    return {
-        key,
-        icon,
-        children,
-        label,
-    };
-}
-
-const items = [
-    getItem('用户中心', 'sub1', <UserOutlined/>, [
-        getItem('个人信息', 'student_profile'),
-        getItem('我的班级','student_classroom'),
-        getItem('设置','student_settings')
-    ]),
-    getItem('图表生成', 'sub2', <PieChartOutlined/>, [
-        getItem('饼图生成', 'student_piechart'),
-        getItem('折线图生成', 'student_linechart'),
-        getItem('箱型图生成', 'student_boxchart'),
-        getItem('直方图生成', 'student_histchart'),
-    ]),
-    getItem('文件转换', 'sub3', <FileOutlined/>,[
-        getItem('pdf转docx','student_pdf2docx'),
-        getItem('docx转pdf','student_docx2pdf'),
-        getItem('excel转pdf','student_excel2pdf'),
-        getItem('pdf转excel','student_pdf2excel'),
-    ]),
-    getItem('二维码生成','student_qrcode_generation',<AppstoreOutlined />),
-    getItem('机器翻译', 'student_translation', <DesktopOutlined/>),
-    getItem('聊天机器人', 'student_robot', <TeamOutlined/>, [
-        getItem('机器人1', 'student_robot'),
-        getItem('机器人2', '13')
-    ]),
-];
 const StudentIndex = () => {
+    const [breadcrumbs, setBreadcrumbs] = useState([]);
+    const location = useLocation();
+    const {Content, Footer, Sider} = Layout;
+    const [robots,setRobots] = useState([]);
+    const fetchRobots = async () =>{
+        try {
+            const student_id = sessionStorage.getItem('student_id')
+            const response = await fetch(`${config.apiUrl}/conversationhandler/get_studentRobots_by_id/${student_id}`);
+            const data = await response.json();
+            console.log(data)
+            // 更新状态以反映从后端获取的机器人数据
+            setRobots(data.robots);
+        } catch (error) {
+            console.error('Error fetching robots:', error);
+        }
+    };
+    useEffect(() => {
+        fetchRobots();
+    }, []);
+    function getItem(label, key, icon, children) {
+        return {
+            key,
+            icon,
+            children,
+            label,
+        };
+    }
+
+    const items = [
+        getItem('用户中心', 'sub1', <UserOutlined/>, [
+            getItem('个人信息', 'student_profile'),
+            getItem('我的班级','student_classroom'),
+            getItem('设置','student_settings'),
+            getItem('创建聊天机器人','student_newRobot')
+        ]),
+        getItem('图表生成', 'sub2', <PieChartOutlined/>, [
+            getItem('饼图生成', 'student_piechart'),
+            getItem('折线图生成', 'student_linechart'),
+            getItem('箱型图生成', 'student_boxchart'),
+            getItem('直方图生成', 'student_histchart'),
+        ]),
+        getItem('文件转换', 'sub3', <FileOutlined/>,[
+            //getItem('pdf转docx','student_pdf2docx'),
+            getItem('docx转pdf','student_docx2pdf'),
+            getItem('excel转pdf','student_excel2pdf'),
+            getItem('pdf转excel','student_pdf2excel'),
+        ]),
+        getItem('二维码生成','student_qrcode_generation',<AppstoreOutlined />),
+        getItem('机器翻译', 'student_translation', <DesktopOutlined/>),
+        getItem('聊天机器人', 'student_robot', <TeamOutlined/>,
+            robots.map((robot, index) => (
+                getItem(robot.title, 'student_robot/'+robot.id.toString()+'/'+robot.role.toString())
+            ))
+        ),
+    ];
+
+    React.useEffect(() => {
+        const pathname = location.pathname;
+        const encodedPathname = decodeURIComponent(pathname);
+        const paths = encodedPathname.split('/').filter(Boolean);
+        setBreadcrumbs(paths);
+    }, [location]);
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: {colorBgContainer, borderRadiusLG},
@@ -83,7 +112,8 @@ const StudentIndex = () => {
             >
                 <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
                     <div className="demo-logo-vertical"/>
-                    <Menu onClick={menuClick} theme="dark" defaultSelectedKeys={['0']} mode="inline" items={items}/>
+                    <Menu onClick={menuClick} theme="dark" defaultSelectedKeys={['0']} mode="inline" items={items}>
+                    </Menu>
                 </Sider>
                 <Layout>
                     <Content
@@ -91,13 +121,10 @@ const StudentIndex = () => {
                             margin: '0 16px',
                         }}
                     >
-                        <Breadcrumb
-                            style={{
-                                margin: '16px 0',
-                            }}
-                        >
-                            <Breadcrumb.Item>User</Breadcrumb.Item>
-                            <Breadcrumb.Item>Bill</Breadcrumb.Item>
+                        <Breadcrumb style={{ margin: '16px 0' }}>
+                            {breadcrumbs.map((item, index) => (
+                                <Breadcrumb.Item key={index}>{item}</Breadcrumb.Item>
+                            ))}
                         </Breadcrumb>
                         <div
                             style={{
@@ -107,10 +134,10 @@ const StudentIndex = () => {
                                 borderRadius: borderRadiusLG,
                             }}
                         >
-                            学生端展现部分！！！！！！！！！！！！！！！！！
                             <Routes>
                                 {/* 用户中心 */}
                                 <Route exact path="student_profile" element={<StudentProfile/>}></Route>
+                                <Route exact path="student_newRobot" element={<NewRobot/>}></Route>
                                 {/* 文件转换模块 */}
                                 {/* 图表生成模块 */}
                                 <Route exact path="student_piechart" element={<PieChart/>}/>
@@ -128,9 +155,7 @@ const StudentIndex = () => {
                                 {/* 机器翻译模块 */}
                                 <Route exact path="student_translation" element={<LanguageTranslation/>}/>
                                 {/* 聊天机器人模块 */}
-                                <Route exact path="student_robot" element={<StudentRobot/>}/>
-
-
+                                <Route exact path="student_robot/:robotId/:robotRole" element={<StudentRobot/>}/>
                             </Routes>
                         </div>
                     </Content>

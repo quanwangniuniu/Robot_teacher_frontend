@@ -1,0 +1,34 @@
+
+.admin_navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #57bf97;
+    padding: 10px 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo img {
+    max-height: 50px;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+}
+
+.menu-item {
+    margin-right: 20px;
+    cursor: pointer;
+    color: #00f1fd;
+    text-decoration: none;
+}
+
+.menu-item:hover{
+    color:#61dafb;
+}
+
+/* Spacer to push user login and contact to the right */
+.spacer {
+    flex-grow: 1;
+}

@@ -19,6 +19,17 @@ import PieChart from "./conponents/ChartHandler/PieChart";
 import BoxChart from "./conponents/ChartHandler/BoxChart";
 import HistChart from "./conponents/ChartHandler/HistChart";
 import LineChart from "./conponents/ChartHandler/LineChart";
+import NewRobot from "./conponents/NewRobot/NewRobot";
+import AdminIndex from "./pages/admin/AdminIndex";
+import ApplicationStatics from "./conponents/ApplicationStatics/Application_statics";
+import StudentManage from "./conponents/AdminHandler/StudentManage";
+import TeacherManage from "./conponents/AdminHandler/TeacherManage";
+import RobotManage from "./conponents/AdminHandler/RobotManage";
+import MessagesManage from "./conponents/AdminHandler/MessagesManage"
+import NotFoundPage from "./pages/NotFoundPage";
+import NewTeacherRobot from "./conponents/NewRobot/NewTeacherRobot";
+import TeacherRobot from "./pages/teacher/RobotTeacher";
+import TeacherClassroom from "./conponents/TeacherHandler/TeacherClassroom";
 
 
 
@@ -38,11 +49,12 @@ function App() {
                         <Route path={'student_translation'} element={<LanguageTranslation />}></Route>
                         <Route path={'student_qrcode_generation'} element={<QRcodeGeneration/>}></Route>
                         <Route path={'student_profile'} element={<StudentProfile/>}></Route>
-                        <Route path={'student_robot'} element={<StudentRobot/>}></Route>
+                        <Route path={'student_robot/:robotId/:robotRole'} element={<StudentRobot/>}></Route>
                         <Route path={'student_piechart'} element={<PieChart/>}></Route>
                         <Route path={'student_boxchart'} element={<BoxChart/>}></Route>
                         <Route path={'student_histchart'} element={<HistChart/>}></Route>
                         <Route path={'student_linechart'} element={<LineChart/>}></Route>
+                        <Route path={'student_newRobot'} element={<NewRobot/>}></Route>
 
                     </>
                 }>
@@ -60,10 +72,23 @@ function App() {
                         <Route path={'teacher_boxchart'} element={<BoxChart/>}></Route>
                         <Route path={'teacher_histchart'} element={<HistChart/>}></Route>
                         <Route path={'teacher_linechart'} element={<LineChart/>}></Route>
-
+                        <Route path={'teacher_newRobot'} element={<NewTeacherRobot/>}></Route>
+                        <Route path={'teacher_classroom'} element={<TeacherClassroom/>}></Route>
+                        <Route path={'teacher_robot/:robotId/:robotRole'} element={<TeacherRobot/>}></Route>
                     </>
                 }>
                 </Route>
+                <Route path='/adminIndex' element={<AdminIndex/>} children={
+                    <>
+                        <Route path={'application_statics'} element={<ApplicationStatics />}></Route>
+                        <Route path={"student_manage"} element={<StudentManage/>}></Route>
+                        <Route path={"teacher_manage"} element={<TeacherManage/>}></Route>
+                        <Route path={"robot_manage"} element={<RobotManage/>}></Route>
+                        <Route path={"messages_manage"} element={<MessagesManage/>}></Route>
+                    </>
+                }>
+                </Route>
+                <Route path="*" element={<NotFoundPage />} /> {/* 所有未匹配路由都重定向到404页面 */}
                 {/*{element}*/}
             </Routes>
             <CopyRight></CopyRight>

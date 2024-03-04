@@ -11,10 +11,10 @@ const Navibars = () => {
                 <img src={logo_pic} alt="Logo" />
             </div>
             <div className="menu">
-                <Link className="menu-item" to="/research">研究领域</Link>
+                <Link className="menu-item" to="/">研究领域</Link>
                 <div className="spacer"></div>
-                <Link className="menu-item" to="/test1">用户登录</Link>
-                <Link className="menu-item" to="/contactus">联系我们</Link>
+                <Link className="menu-item" to="/">用户登录</Link>
+                <Link className="menu-item" to="/">联系我们</Link>
             </div>
         </nav>
     );

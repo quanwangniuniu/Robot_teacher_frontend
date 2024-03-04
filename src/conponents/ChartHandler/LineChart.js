@@ -1,18 +1,21 @@
 import React, {useState} from 'react';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import {Button, Form, Input,Space,TreeSelect} from 'antd';
+import {Button, Form, Input,Space,TreeSelect,Image} from 'antd';
 import axios from "axios";
 import config from "../../api/config";
 
 const LineChart = () => {
-    const [image, setImage] = useState(null);
+    const [imageData, setImageData] = useState('');
+
     const onFinish = (values) => {
         console.log('Received values of form:', values);
         axios.post(`${config.apiUrl}/charthandler/linechart/`,values)
             .then((response)=>{
                 console.log(response)
-                if (response.data.success && response.data.image) {
-                    setImage(`data:image/png;base64,${response.data.image}`);
+                if (response.data.success) {
+                    // 从响应中提取图像的 Base64 编码数据
+                    const image_data = response.data.image_data;
+                    setImageData(image_data);
                 } else {
                     console.error('Failed to receive image from the backend');
                 }
@@ -156,7 +159,7 @@ const LineChart = () => {
                 </Form.Item>
             </Form>
             {/* Display the image */}
-            {image && <img src={`data:image/png;base64,${image}`} alt="Matplotlib Chart" />}
+            {imageData && <Image src={`data:image/png;base64,${imageData}`} alt="Linegram" />}
         </>
     )
 };

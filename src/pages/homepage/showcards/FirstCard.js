@@ -65,7 +65,7 @@ const FirstCard = () => {
                 console.log(data.student_id)
                 const user_id = data.student_id
                 sessionStorage.setItem('student_id',user_id)
-                navigate('/studentIndex',{replace:true})
+                navigate('/studentIndex/student_newRobot',{replace:true})
             } else {
                 // Handle login failure
                 console.log(response)

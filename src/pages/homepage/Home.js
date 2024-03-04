@@ -1,10 +1,11 @@
 import React from "react";
 import './Home.css'
 import Navibars from "../../conponents/Navigation/Navibars";
-import {Link} from "react-router-dom";
 import AntCarousel from "./Carousel";
 import ThreeCards from "./showcards/ThreeCards";
 import ContactUs from "../contact/ContactUs";
+import Research from "../Research";
+import Estimations from "../Estimations/Estimations";
 
 
 
@@ -21,29 +22,18 @@ const Home = () =>{
             <div className="home_container">
             </div>
                 <ThreeCards></ThreeCards>
-            <div>
-                <div>
-                    <Link to="/studentIndex">学生端入口</Link>
-                </div>
-                <div>
-                    <Link to="/teacherIndex">教师端入口</Link>
-                </div>
-                <div>
-                    <Link to="/teacherIndex">管理员端入口</Link>
-                </div>
-            </div>
 
             <div className="four-module-container">
                 <div className="module white-bg">
                     <AntCarousel/>
                 </div>
-                <div className="module black-bg">
-
+                <div className="module black-bg" style={{height:2090}} id="section2">
+                   <Estimations></Estimations>
                 </div>
                 <div className="module white-bg">
-
+                   <Research></Research>
                 </div>
-                <div className="module black-bg">
+                <div className="module black-bg" id="section3">
                     <ContactUs></ContactUs>
                 </div>
             </div>
@@ -51,4 +41,4 @@ const Home = () =>{
     )
 }
 
-export  default Home;
+export default Home;

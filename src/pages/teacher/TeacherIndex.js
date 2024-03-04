@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     AppstoreOutlined,
     DesktopOutlined,
@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import {Breadcrumb, Layout, Menu, theme} from 'antd';
 import TeacherNavi from "../../conponents/TeacherNavi/TeacherNavi";
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import QRcodeGeneration from "../../conponents/QRcodeGeneration/QRcodeGeneration";
 import Pdf2Docx from "../../conponents/FileHandler/Pdf2Docx";
 import Docx2Pdf from "../../conponents/FileHandler/Docx2Pdf";
@@ -22,45 +22,76 @@ import HistChart from "../../conponents/ChartHandler/HistChart";
 import PieChart from "../../conponents/ChartHandler/PieChart";
 import BoxChart from "../../conponents/ChartHandler/BoxChart";
 import LineChart from "../../conponents/ChartHandler/LineChart";
+import NewTeacherRobot from "../../conponents/NewRobot/NewTeacherRobot";
+import config from "../../api/config";
+import TeacherRobot from "./RobotTeacher";
+import TeacherClassroom from "../../conponents/TeacherHandler/TeacherClassroom";
 
-const {Content, Footer, Sider} = Layout;
 
-function getItem(label, key, icon, children) {
-    return {
-        key,
-        icon,
-        children,
-        label,
-    };
-}
-
-const items = [
-    getItem('用户中心', 'sub1', <UserOutlined/>, [
-        getItem('个人信息', 'teacher_profile'),
-        getItem('使用统计', '2'),
-        getItem('班级管理','3'),
-        getItem('设置','4')
-    ]),
-    getItem('图表生成', 'sub2', <PieChartOutlined/>, [
-        getItem('饼图生成', 'teacher_piechart'),
-        getItem('折线图生成', 'teacher_linechart'),
-        getItem('箱型图生成', 'teacher_boxchart'),
-        getItem('直方图生成', 'teacher_histchart'),
-    ]),
-    getItem('文件转换', 'sub3', <FileOutlined/>,[
-        getItem('pdf转docx','teacher_pdf2docx'),
-        getItem('docx转pdf','teacher_docx2pdf'),
-        getItem('excel转pdf','teacher_excel2pdf'),
-        getItem('pdf转excel','teacher_pdf2excel'),
-    ]),
-    getItem('二维码生成','teacher_qrcode_generation',<AppstoreOutlined />),
-    getItem('机器翻译', 'teacher_translation', <DesktopOutlined/>),
-    getItem('聊天机器人', 'sub5', <TeamOutlined/>, [
-        getItem('机器人1', '12'),
-        getItem('机器人2', '13')
-    ]),
-];
 const TeacherIndex = () => {
+    const [breadcrumbs, setBreadcrumbs] = useState([]);
+    const location = useLocation();
+    const {Content, Footer, Sider} = Layout;
+    const [robots,setRobots] = useState([]);
+    const fetchRobots = async () =>{
+        try {
+            const teacher_id = sessionStorage.getItem('teacher_id')
+            const response = await fetch(`${config.apiUrl}/conversationhandler/get_teacherRobots_by_id/${teacher_id}`);
+            const data = await response.json();
+            console.log(data)
+            // 更新状态以反映从后端获取的机器人数据
+            setRobots(data.robots);
+        } catch (error) {
+            console.error('Error fetching robots:', error);
+        }
+    };
+    useEffect(() => {
+        fetchRobots();
+    }, []);
+    function getItem(label, key, icon, children) {
+        return {
+            key,
+            icon,
+            children,
+            label,
+        };
+    }
+
+    const items = [
+        getItem('用户中心', 'sub1', <UserOutlined/>, [
+            getItem('个人信息', 'teacher_profile'),
+            getItem('创建机器人','teacher_newRobot'),
+            getItem('使用统计', '2'),
+            getItem('班级管理','teacher_classroom'),
+            getItem('设置','4')
+        ]),
+        getItem('图表生成', 'sub2', <PieChartOutlined/>, [
+            getItem('饼图生成', 'teacher_piechart'),
+            getItem('折线图生成', 'teacher_linechart'),
+            getItem('箱型图生成', 'teacher_boxchart'),
+            getItem('直方图生成', 'teacher_histchart'),
+        ]),
+        getItem('文件转换', 'sub3', <FileOutlined/>,[
+            //getItem('pdf转docx','teacher_pdf2docx'),
+            getItem('docx转pdf','teacher_docx2pdf'),
+            getItem('excel转pdf','teacher_excel2pdf'),
+            getItem('pdf转excel','teacher_pdf2excel'),
+        ]),
+        getItem('二维码生成','teacher_qrcode_generation',<AppstoreOutlined />),
+        getItem('机器翻译', 'teacher_translation', <DesktopOutlined/>),
+        getItem('聊天机器人', 'teacher_robot', <TeamOutlined/>,
+            robots.map((robot, index) => (
+                getItem(robot.title, 'teacher_robot/'+robot.id.toString()+'/'+robot.role.toString())
+            ))
+        ),
+    ];
+
+    React.useEffect(() => {
+        const pathname = location.pathname;
+        const encodedPathname = decodeURIComponent(pathname);
+        const paths = encodedPathname.split('/').filter(Boolean);
+        setBreadcrumbs(paths);
+    }, [location]);
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: {colorBgContainer, borderRadiusLG},
@@ -89,13 +120,10 @@ const TeacherIndex = () => {
                             margin: '0 16px',
                         }}
                     >
-                        <Breadcrumb
-                            style={{
-                                margin: '16px 0',
-                            }}
-                        >
-                            <Breadcrumb.Item>User</Breadcrumb.Item>
-                            <Breadcrumb.Item>Bill</Breadcrumb.Item>
+                        <Breadcrumb style={{ margin: '16px 0' }}>
+                            {breadcrumbs.map((item, index) => (
+                                <Breadcrumb.Item key={index}>{item}</Breadcrumb.Item>
+                            ))}
                         </Breadcrumb>
                         <div
                             style={{
@@ -105,11 +133,11 @@ const TeacherIndex = () => {
                                 borderRadius: borderRadiusLG,
                             }}
                         >
-                            教师端展现部分！！！！！！！！！！！！！！！！！
                             <Routes>
                                 {/* 用户中心 */}
                                 <Route exact path="teacher_profile" element={<TeacherProfile/>}></Route>
-
+                                <Route exact path="teacher_newRobot" element={<NewTeacherRobot/>}></Route>
+                                <Route exact path="teacher_classroom" element={<TeacherClassroom/>}></Route>
                                 {/* 文件转换模块 */}
                                 {/* 图表生成模块 */}
                                 <Route exact path="teacher_piechart" element={<PieChart/>}/>
@@ -127,6 +155,7 @@ const TeacherIndex = () => {
                                 {/* 机器翻译模块 */}
                                 <Route exact path="teacher_translation" element={<LanguageTranslation/>}/>
                                 {/* 聊天机器人模块 */}
+                                <Route exact path="teacher_robot/:robotId/:robotRole" element={<TeacherRobot/>}/>
                             </Routes>
                         </div>
                     </Content>

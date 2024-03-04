@@ -3,17 +3,43 @@ import Chat, { Bubble, useMessages } from '@chatui/core';
 import '@chatui/core/dist/index.css';
 import axios from "axios";
 import config from "../../api/config";
+import {useParams} from "react-router-dom";
+import {useEffect} from "react";
 
 const StudentRobot = () => {
-    const initialMessages = [
-        {
-            type: 'text',
-            content: { text: '学生您好，我是学生端助理瑞瑞，你的贴心小助手~' },
-            user: { avatar: '//gw.alicdn.com/tfs/TB1DYHLwMHqK1RjSZFEXXcGMXXa-56-62.svg' },
-        },
+    const {robotId,robotRole} = useParams();
+    // 消息列表
+    const { messages, appendMsg, setTyping } = useMessages([]);
+    useEffect(() => {
+        // 清空先前的对话内容
+        messages.length = 0
+        axios.get(`${config.apiUrl}/conversationhandler/get_messages_by_robot_id/${robotId}`)
+            .then((response) => {
+                const fetchedMessages = response.data.msg.map((msg) => ({
+                    type: 'text',
+                    content: { text: msg.content },
+                    user: { avatar: '//gw.alicdn.com/tfs/TB1DYHLwMHqK1RjSZFEXXcGMXXa-56-62.svg' },
+                    position: msg.position
+                }));
+                console.log(fetchedMessages)
+                if (fetchedMessages.length === 0) {
+                    appendMsg({
+                        type: 'text',
+                        content: { text: `您好，请和您的专属 ${robotRole} 助手开启第一次对话吧！` },
+                        user: { avatar: '//gw.alicdn.com/tfs/TB1DYHLwMHqK1RjSZFEXXcGMXXa-56-62.svg' },
+                        position: 'left'
+                    });
+                } else {
+                    fetchedMessages.forEach((msg) => {
+                        appendMsg(msg);
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, [robotId, robotRole, appendMsg]);
 
-    ];
-    // 默认快捷短语，可选
     const defaultQuickReplies = [
         {
             icon: 'message',
@@ -22,25 +48,23 @@ const StudentRobot = () => {
             isHighlight: true,
         },
         {
-            name: '爷爷年纪大嘴里没了牙，给他策划过生日',
+            name: '写一个斐波那契数列递归程序',
             isNew: true,
         },
         {
-            name: '奶奶年纪大爱酗酒，影响考研怎么办',
+            name: '软件工程的课程设计可以做哪些内容？',
             isHighlight: true,
         },
         {
-            name: '孙子早恋不学习爱旅游，定制一个去苏州的旅游计划',
+            name: '前端开发框架选angular还是Vue?',
         },
     ];
-    // 消息列表
-    const { messages, appendMsg, setTyping } = useMessages(initialMessages);
 
     // 发送回调
     async function handleSend(type, val) {
         if (type === 'text' && val.trim()) {
             // TODO: 发送请求
-            axios.post(`${config.apiUrl}/conversationhandler/conversation_view/`,val)
+            axios.post(`${config.apiUrl}/conversationhandler/conversation_view/${robotId}/${robotRole}`,val)
                 .then((response)=>{
                     // console.log(response.data.messages[2].content);
                     const content = response.data.messages[2].content
@@ -62,6 +86,7 @@ const StudentRobot = () => {
                 type: 'text',
                 content: {text: val},
                 position: 'right',
+                user: { avatar: 'https://robohash.org/duck' },
             });
 
             setTyping(true);
@@ -93,14 +118,16 @@ const StudentRobot = () => {
     }
 
     return (
-        <Chat
-            navbar={{ title: '学生端机器人' }}
-            messages={messages}
-            renderMessageContent={renderMessageContent}
-            quickReplies={defaultQuickReplies}
-            onQuickReplyClick={handleQuickReplyClick}
-            onSend={handleSend}
-        />
+        <div style={{ height: '1200px', overflowY: 'auto' }}>
+            <Chat
+                navbar={{ title: robotRole }}
+                messages={messages}
+                renderMessageContent={renderMessageContent}
+                quickReplies={defaultQuickReplies}
+                onQuickReplyClick={handleQuickReplyClick}
+                onSend={handleSend}
+            />
+        </div>
     );
 };
 

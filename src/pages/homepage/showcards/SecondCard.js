@@ -71,7 +71,7 @@ const SecondCard = () => {
                 console.log(data.teacher_id)
                 const user_id = data.teacher_id
                 sessionStorage.setItem('teacher_id',user_id)
-                navigate('/teacherIndex',{replace:true})
+                navigate('/teacherIndex/teacher_newRobot',{replace:true})
             } else {
                 // Handle login failure
                 console.log(response)

@@ -3,6 +3,7 @@ import './TeacherNavi.css';
 import logo_pic from '../images/robotTeacher.png'
 import {Avatar,Space} from "antd";
 import {UserOutlined} from '@ant-design/icons'
+import {Link} from "react-router-dom";
 
 const TeacherNavibars = () => {
     const username = sessionStorage.getItem('username')
@@ -10,8 +11,9 @@ const TeacherNavibars = () => {
     return (
         <nav className="navbar">
             <div className="logo">
-                {/*  website logo */}
-                <img src={logo_pic} alt="Logo" />
+                <Link to="/">
+                    <img src={logo_pic} alt="Logo" />
+                </Link>
             </div>
             <div className="menu">
                 <Space> <p>欢迎进入教师端！</p></Space>

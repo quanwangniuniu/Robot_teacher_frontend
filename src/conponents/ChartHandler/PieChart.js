@@ -1,19 +1,24 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import {Button, Form, Input, Slider, Space, TreeSelect} from 'antd';
+import {Button, Form, Image, Input, Slider, Space, TreeSelect} from 'antd';
 import axios from "axios";
 import config from "../../api/config";
-const onFinish = (values) => {
-    console.log('Received values of form:', values);
-    axios.post(`${config.apiUrl}/charthandler/piechart/`,values)
-        .then((response)=>{
-            console.log(response)
-        })
-        .catch((error)=>{
-            console.error(error)
-        })
-};
+
 const PieChart = () => {
+    const [imageData, setImageData] = useState('');
+    const onFinish = (values) => {
+        console.log('Received values of form:', values);
+        axios.post(`${config.apiUrl}/charthandler/piechart/`,values)
+            .then((response)=>{
+                console.log(response)
+                // 从响应中提取图像的 Base64 编码数据
+                const image_data = response.data.image_data;
+                setImageData(image_data);
+            })
+            .catch((error)=>{
+                console.error(error)
+            })
+    };
     return(
         <>
     <Form
@@ -118,7 +123,9 @@ const PieChart = () => {
             </Button>
         </Form.Item>
     </Form>
-            </>
+            {imageData && <Image src={`data:image/png;base64,${imageData}`} alt="piegram" />}
+
+        </>
     )
 };
 export default PieChart;
