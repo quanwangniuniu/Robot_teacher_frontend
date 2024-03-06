@@ -26,6 +26,7 @@ import HistChart from "../../conponents/ChartHandler/HistChart";
 import LineChart from "../../conponents/ChartHandler/LineChart";
 import NewRobot from "../../conponents/NewRobot/NewRobot";
 import config from "../../api/config";
+import StudentClassroom from "../../conponents/StudentHandler/StudentClassroom";
 
 
 
@@ -138,6 +139,7 @@ const StudentIndex = () => {
                                 {/* 用户中心 */}
                                 <Route exact path="student_profile" element={<StudentProfile/>}></Route>
                                 <Route exact path="student_newRobot" element={<NewRobot/>}></Route>
+                                <Route exact path="student_classroom" element={<StudentClassroom/>}></Route>
                                 {/* 文件转换模块 */}
                                 {/* 图表生成模块 */}
                                 <Route exact path="student_piechart" element={<PieChart/>}/>

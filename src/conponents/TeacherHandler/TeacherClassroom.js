@@ -9,8 +9,10 @@ const { Option } = Select;
 const TeacherClassroom = () => {
     const [visible, setVisible] = useState(false);
     const [editVisible, setEditVisible] = useState(false);
+    const [participateVisible,setParticipateVisible] = useState(false);
     const [form] = Form.useForm();
     const [editForm] = Form.useForm();
+    const [participateForm] = Form.useForm();
     const [selectedAvatar, setSelectedAvatar] = useState('https://robohash.org/duck');
     const [currentClass, setCurrentClass] = useState(null);
     const [classrooms, setClassrooms] = useState([]);
@@ -51,9 +53,13 @@ const TeacherClassroom = () => {
         setEditVisible(true);
     };
 
+    const showParticipateModal =()=> {
+        setParticipateVisible(true);
+    }
     const handleCancel = () => {
         setVisible(false);
         setEditVisible(false);
+        setParticipateVisible(false);
     };
 
     const handleCreate = () => {
@@ -130,6 +136,35 @@ const TeacherClassroom = () => {
         }
     };
 
+    const handleParticipate = () => {
+        participateForm.validateFields().then(async values => {
+            const formData = new FormData();
+            formData.append('teacher_id', sessionStorage.getItem('teacher_id'));
+            formData.append('class_name', values.class_name);
+            try {
+                const response = await fetch(`${config.apiUrl}/classroomhandler/teacher_participate/`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to participate in any classroom');
+                }
+
+                // Classroom created successfully
+                message.success('加入成功！')
+                refreshData();
+                console.log('Classroom participated successfully!');
+            } catch (error) {
+                message.error('该班级不存在！加入失败');
+                console.error('Error creating classroom:', error.message);
+            }
+            form.resetFields();
+            setParticipateVisible(false);
+        }).catch(info => {
+            console.log('Validate Failed:', info);
+        });
+    };
     const menu = (cls) => (
         <Menu onClick={(e) => handleMenuClick(e, cls)}>
             <Menu.Item key="edit">编辑班级</Menu.Item>
@@ -171,6 +206,27 @@ const TeacherClassroom = () => {
                                 <Option value="https://robohash.org/lion">Lion</Option>
                                 <Option value="https://robohash.org/banana">Banana</Option>
                             </Select>
+                        </Form.Item>
+                    </Form>
+                </Modal>
+                <Row justify="center" style={{ marginTop: '20px' }}>
+                    <Button type="primary" icon={<PlusOutlined />} onClick={showParticipateModal}>
+                        加入新的班级
+                    </Button>
+                </Row>
+                <Modal
+                    title="加入新的班级"
+                    visible={participateVisible}
+                    onOk={handleParticipate}
+                    onCancel={handleCancel}
+                >
+                    <Form form={participateForm} layout="vertical">
+                        <Form.Item
+                            name="class_name"
+                            label="班级名称"
+                            rules={[{ required: true, message: '请输入班级名称' }]}
+                        >
+                            <Input />
                         </Form.Item>
                     </Form>
                 </Modal>
@@ -254,6 +310,27 @@ const TeacherClassroom = () => {
                                 <Option value="https://robohash.org/lion">Lion</Option>
                                 <Option value="https://robohash.org/banana">Banana</Option>
                             </Select>
+                        </Form.Item>
+                    </Form>
+                </Modal>
+                <Row justify="center" style={{ marginTop: '20px' }}>
+                    <Button type="primary" icon={<PlusOutlined />} onClick={showParticipateModal}>
+                        加入新的班级
+                    </Button>
+                </Row>
+                <Modal
+                    title="加入新的班级"
+                    visible={participateVisible}
+                    onOk={handleParticipate}
+                    onCancel={handleCancel}
+                >
+                    <Form form={participateForm} layout="vertical">
+                        <Form.Item
+                            name="class_name"
+                            label="班级名称"
+                            rules={[{ required: true, message: '请输入班级名称' }]}
+                        >
+                            <Input />
                         </Form.Item>
                     </Form>
                 </Modal>

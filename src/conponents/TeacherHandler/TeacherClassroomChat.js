@@ -1,12 +1,27 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Chat, { Bubble, useMessages } from '@chatui/core';
 import {Avatar, Col, List, Row} from 'antd';
-
-
+import axios from "axios";
+import config from "../../api/config";
 
 
 const TeacherClassroomChat = () => {
-    const data = [
+    const [users_data,setUsersData] = useState([])
+    useEffect(() => {
+        // 待修改
+        const class_id = sessionStorage.getItem("teacher_id")
+        // 发送HTTP请求
+        axios.get(`${config.apiUrl}/classroomhandler/get_users_in_classrooms/${class_id}/`)
+            .then(response => {
+                setUsersData(response.data.classrooms);
+                console.log(response.data)
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error);
+            });
+    }, []);
+
+    const user_data = [
         {
             title: 'Ant Design Title 1',
         },
@@ -121,7 +136,7 @@ const TeacherClassroomChat = () => {
                 <Col span={6}>
                     <List
                         itemLayout="horizontal"
-                        dataSource={data}
+                        dataSource={user_data}
                         renderItem={(item, index) => (
                             <List.Item>
                                 <List.Item.Meta
