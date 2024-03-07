@@ -77,7 +77,7 @@ function App() {
                         <Route path={'teacher_linechart'} element={<LineChart/>}></Route>
                         <Route path={'teacher_newRobot'} element={<NewTeacherRobot/>}></Route>
                         <Route path={'teacher_classroom'} element={<TeacherClassroom/>}></Route>
-                        <Route path={'teacher_classroom_chat'} element={<TeacherClassroomChat/>}></Route>
+                        <Route path={'teacher_classroom_chat/:class_id'} element={<TeacherClassroomChat/>}></Route>
 
                         <Route path={'teacher_robot/:robotId/:robotRole'} element={<TeacherRobot/>}></Route>
                     </>

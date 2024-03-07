@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {Avatar, Row, Col, Menu, Dropdown, Button, Modal, Form, Input, Select, Empty, message} from 'antd';
-import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
+import {EllipsisOutlined, LeftOutlined, PlusOutlined} from '@ant-design/icons';
 import axios from "axios";
 import config from "../../api/config";
+import {useNavigate} from "react-router-dom";
 
 const { Option } = Select;
 
@@ -80,7 +81,7 @@ const TeacherClassroom = () => {
 
                 // Classroom created successfully
                 refreshData();
-                console.log('Classroom created successfully!');
+                message.success('班级创建成功！')
             } catch (error) {
                 message.error('当前班级名已存在！创建失败');
                 console.error('Error creating classroom:', error.message);
@@ -154,7 +155,6 @@ const TeacherClassroom = () => {
                 // Classroom created successfully
                 message.success('加入成功！')
                 refreshData();
-                console.log('Classroom participated successfully!');
             } catch (error) {
                 message.error('该班级不存在！加入失败');
                 console.error('Error creating classroom:', error.message);
@@ -171,6 +171,13 @@ const TeacherClassroom = () => {
             <Menu.Item key="delete">删除班级</Menu.Item>
         </Menu>
     );
+
+    const navigate = useNavigate()
+    const navigateToClass = (class_id) => {
+        navigate(`/teacherIndex/teacher_classroom_chat/${class_id}`,{replace:true})
+    };
+
+
     if(classrooms.length===0){
         return(
             <>
@@ -245,7 +252,7 @@ const TeacherClassroom = () => {
                                 </Dropdown>
                                 <Avatar size={100} src={cls.class_avatar} style={{borderColor:"black",border:2}}/>
                                 <h3>{cls.class_name}</h3>
-                                <a href={`#class/${cls.class_id}`}>查看详情</a>
+                                <Button onClick={() => navigateToClass(cls.class_id)}>查看详情</Button>
                             </div>
                         </Col>
                     ))}
