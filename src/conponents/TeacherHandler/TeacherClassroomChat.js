@@ -5,6 +5,7 @@ import axios from "axios";
 import config from "../../api/config";
 import {useLocation, useNavigate} from "react-router-dom";
 import {LeftOutlined} from "@ant-design/icons";
+import {green} from "@mui/material/colors";
 
 
 const TeacherClassroomChat = () => {
@@ -15,6 +16,8 @@ const TeacherClassroomChat = () => {
     const pathname = location.pathname;
     // 使用字符串处理方法提取最后一个斜杠后面的内容
     const class_id= pathname.substring(pathname.lastIndexOf('/') + 1);
+    // 消息列表
+    const { messages, appendMsg, setTyping } = useMessages([]);
     useEffect(() => {
         // 发送HTTP请求
         axios.get(`${config.apiUrl}/classroomhandler/get_users_in_classrooms/${class_id}/`)
@@ -32,22 +35,37 @@ const TeacherClassroomChat = () => {
             .catch(error => {
                 console.error('Error fetching users:', error);
             });
-    }, []);
+        // 获得当前班级所有消息
+        // 清空先前的对话内容
+        messages.length = 0
+        axios.get(`${config.apiUrl}/classroomhandler/get_classroom_messages/${class_id}`)
+            .then((response) => {
+                const fetchedMessages = response.data.classroom_info.map((classroom_info) => ({
+                    type: 'text',
+                    content: { text: classroom_info.message_content },
+                    user: { avatar: classroom_info.message_avatar,name:classroom_info.user_name},
+                    position: sessionStorage.getItem('username')=== classroom_info.user_name ? 'right':'left'
+                }));
+                console.log(fetchedMessages)
+                if (fetchedMessages.length === 0) {
+                    appendMsg({
+                        type: 'text',
+                        content: { text: `还没有人发言哦` },
+                        user: { avatar: '//gw.alicdn.com/tfs/TB1DYHLwMHqK1RjSZFEXXcGMXXa-56-62.svg',name:'群助手' },
+                        position: 'left'
+                    });
+                } else {
+                    fetchedMessages.forEach((msg) => {
+                        appendMsg(msg);
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
+    }, [appendMsg]);
 
-    const initialMessages = [
-        {
-            type: 'text',
-            content: { text: '主人好，我是智能助理，你的贴心小助手~' },
-            user: { avatar: '//gw.alicdn.com/tfs/TB1DYHLwMHqK1RjSZFEXXcGMXXa-56-62.svg' },
-        },
-        {
-            type: 'image',
-            content: {
-                picUrl: '//img.alicdn.com/tfs/TB1p_nirYr1gK0jSZR0XXbP8XXa-300-300.png',
-            },
-        },
-    ];
 
 // 默认快捷短语，可选
     const defaultQuickReplies = [
@@ -69,8 +87,6 @@ const TeacherClassroomChat = () => {
             name: '短语3',
         },
     ];
-    // 消息列表
-    const { messages, appendMsg, setTyping } = useMessages(initialMessages);
 
     // 发送回调
     function handleSend(type, val) {
@@ -127,7 +143,7 @@ const TeacherClassroomChat = () => {
             </div>
             <Row gutter={[16, 16]}>
                 <Col span={18}>
-                    <div style={{ height: '1200px', overflowY: 'auto' }}>
+                    <div style={{ height: '1200px', overflowY: 'auto'}}>
                         <Chat
                             navbar={{ title: classroom_name }}
                             messages={messages}
