@@ -63,13 +63,11 @@ const ThirdCard = () => {
                 login_success();
                 sessionStorage.setItem('username',inputValue_admin_username)
                 const data = await response.json()
-                console.log(data.admin_id)
                 const user_id = data.admin_id
                 sessionStorage.setItem('admin_id',user_id)
                 navigate('/adminIndex/application_statics',{replace:true})
             } else {
                 // Handle login failure
-                console.log(response)
                 login_warning()
             }
         } catch (error) {

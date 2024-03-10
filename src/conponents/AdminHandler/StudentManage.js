@@ -121,7 +121,6 @@ const StudentManage = () => {
 
     const handleAddOk = () => {
         addForm.validateFields().then((values) => {
-                console.log(values)
                 // Send PUT request to update backend data
                 fetch(`${config.apiUrl}/adminhandler/add_student/`, {
                     method: 'Post',
@@ -137,7 +136,6 @@ const StudentManage = () => {
                         return response.json();
                     })
                     .then(data => {
-                        console.log('Add student data:', data);
                         // 弹出成功提示
                         message.success('Student added successfully');
                         // 重置表单

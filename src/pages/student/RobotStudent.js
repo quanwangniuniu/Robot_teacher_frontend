@@ -21,7 +21,6 @@ const StudentRobot = () => {
                     user: { avatar: '//gw.alicdn.com/tfs/TB1DYHLwMHqK1RjSZFEXXcGMXXa-56-62.svg' },
                     position: msg.position
                 }));
-                console.log(fetchedMessages)
                 if (fetchedMessages.length === 0) {
                     appendMsg({
                         type: 'text',
@@ -66,7 +65,6 @@ const StudentRobot = () => {
             // TODO: 发送请求
             axios.post(`${config.apiUrl}/conversationhandler/conversation_view/${robotId}/${robotRole}`,val)
                 .then((response)=>{
-                    // console.log(response.data.messages[2].content);
                     const content = response.data.messages[2].content
                     if(content) {
                         appendMsg({

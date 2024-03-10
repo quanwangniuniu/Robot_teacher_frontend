@@ -8,12 +8,9 @@ const HistChart = () => {
     const [imageData, setImageData] = useState('');
 
     const onFinish = (values) => {
-        console.log('Received values of form:', values);
         axios.post(`${config.apiUrl}/charthandler/histchart/`,values)
             .then(async (response) => {
-                console.log(response)
                 if (response.data.success) {
-                    console.log(response.data.image_data)
                     // 从响应中提取图像的 Base64 编码数据
                     const image_data = response.data.image_data;
                     setImageData(image_data);

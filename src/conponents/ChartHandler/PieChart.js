@@ -7,10 +7,8 @@ import config from "../../api/config";
 const PieChart = () => {
     const [imageData, setImageData] = useState('');
     const onFinish = (values) => {
-        console.log('Received values of form:', values);
         axios.post(`${config.apiUrl}/charthandler/piechart/`,values)
             .then((response)=>{
-                console.log(response)
                 // 从响应中提取图像的 Base64 编码数据
                 const image_data = response.data.image_data;
                 setImageData(image_data);

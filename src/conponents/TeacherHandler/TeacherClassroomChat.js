@@ -5,7 +5,6 @@ import axios from "axios";
 import config from "../../api/config";
 import {useLocation, useNavigate} from "react-router-dom";
 import {LeftOutlined} from "@ant-design/icons";
-import {green} from "@mui/material/colors";
 
 
 const TeacherClassroomChat = () => {
@@ -169,7 +168,6 @@ const TeacherClassroomChat = () => {
                         )}
                     />
                 </Col>
-
             </Row>
         </>
     );

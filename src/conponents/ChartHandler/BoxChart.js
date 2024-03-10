@@ -7,7 +7,6 @@ import config from "../../api/config";
 const BoxChart = () => {
     const [imageData, setImageData] = useState('');
     const onFinish = (values) => {
-        console.log('Received values of form:', values);
         axios.post(`${config.apiUrl}/charthandler/boxchart/`,values)
             .then((response)=>{
                 // 从响应中提取图像的 Base64 编码数据

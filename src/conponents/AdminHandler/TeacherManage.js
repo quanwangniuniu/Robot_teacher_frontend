@@ -117,7 +117,6 @@ const TeacherManage = () => {
 
     const handleAddOk = () => {
         addForm.validateFields().then((values) => {
-            console.log(values)
             // Send PUT request to update backend data
             fetch(`${config.apiUrl}/adminhandler/add_teacher/`, {
                 method: 'Post',

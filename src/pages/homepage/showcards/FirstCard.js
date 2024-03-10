@@ -62,13 +62,11 @@ const FirstCard = () => {
                 login_success();
                 sessionStorage.setItem('username',inputValue_stu_phone)
                 const data = await response.json()
-                console.log(data.student_id)
                 const user_id = data.student_id
                 sessionStorage.setItem('student_id',user_id)
                 navigate('/studentIndex/student_newRobot',{replace:true})
             } else {
                 // Handle login failure
-                console.log(response)
                 login_warning()
             }
         } catch (error) {
@@ -80,11 +78,9 @@ const FirstCard = () => {
     };
     const handleRegister = async (values) => {
         setIsRegisterModalOpen(false);
-        console.log("handleRegister:",values)
         axios.post(`${config.apiUrl}/studenthandler/student_register/`,values)
             .then((response)=>{
                 alert("新的学生用户创建成功！现在可以登录啦！")
-                console.log('成功创建新的学生用户',response.data);
             })
             .catch((error)=>{
                 alert("创建失败,用户已存在,请尝试更换用户名、邮箱或手机号,并重试",)

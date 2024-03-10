@@ -39,7 +39,6 @@ const TeacherIndex = () => {
             const teacher_id = sessionStorage.getItem('teacher_id')
             const response = await fetch(`${config.apiUrl}/conversationhandler/get_teacherRobots_by_id/${teacher_id}`);
             const data = await response.json();
-            console.log(data)
             // 更新状态以反映从后端获取的机器人数据
             setRobots(data.robots);
         } catch (error) {

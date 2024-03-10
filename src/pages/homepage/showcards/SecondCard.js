@@ -68,13 +68,11 @@ const SecondCard = () => {
                 login_success();
                 sessionStorage.setItem('username',inputValue_teacher_username)
                 const data = await response.json()
-                console.log(data.teacher_id)
                 const user_id = data.teacher_id
                 sessionStorage.setItem('teacher_id',user_id)
                 navigate('/teacherIndex/teacher_newRobot',{replace:true})
             } else {
                 // Handle login failure
-                console.log(response)
                 login_warning()
             }
         } catch (error) {

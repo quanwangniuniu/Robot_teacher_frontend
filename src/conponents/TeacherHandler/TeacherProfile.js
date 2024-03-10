@@ -42,11 +42,9 @@ const TeacherProfile = () => {
 
     const onFinish = (values) => {
         // 在这里处理表单提交逻辑
-        console.log('Received values:', values);
         const teacher_id = sessionStorage.getItem('teacher_id')
         axios.post(`${config.apiUrl}/teacherhandler/update_teacherUser_by_id/${teacher_id}/`,values)
             .then((response)=>{
-                   console.log(response.data)
                    setIsModalOpen(false)
                    sessionStorage.setItem('username',values.username)
                    window.location.reload(); // 刷新整个页面
