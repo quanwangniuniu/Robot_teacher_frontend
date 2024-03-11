@@ -45,7 +45,6 @@ const TeacherClassroomChat = () => {
                     user: { avatar: classroom_info.message_avatar,name:classroom_info.user_name},
                     position: sessionStorage.getItem('username')=== classroom_info.user_name ? 'right':'left'
                 }));
-                console.log(fetchedMessages)
                 if (fetchedMessages.length === 0) {
                     appendMsg({
                         type: 'text',
@@ -88,24 +87,23 @@ const TeacherClassroomChat = () => {
     ];
 
     // 发送回调
-    function handleSend(type, val) {
+    async function handleSend(type, val) {
         if (type === 'text' && val.trim()) {
+            let username = sessionStorage.getItem("username")
             // TODO: 发送请求
+            axios.post(`${config.apiUrl}/classroomhandler/send_messages/${class_id}/${username}`,val)
+                .then((response)=>{
+                   console.log(response.data)
+                })
+                .catch((error)=>{
+                    console.error(error)
+                })
             appendMsg({
                 type: 'text',
-                content: { text: val },
+                content: {text: val},
                 position: 'right',
+                user: { avatar: 'https://robohash.org/duck' },
             });
-
-            setTyping(true);
-
-            // 模拟回复消息
-            setTimeout(() => {
-                appendMsg({
-                    type: 'text',
-                    content: { text: '亲，您遇到什么问题啦？请简要描述您的问题~' },
-                });
-            }, 1000);
         }
     }
     const navigate = useNavigate()
