@@ -4,6 +4,7 @@ import axios from 'axios';
 import moment from 'moment'; // 引入moment库
 import {useLocation} from 'react-router-dom'
 import config from "../../api/config";
+import {ClockCircleTwoTone, SmileTwoTone} from "@ant-design/icons";
 
 const { Option } = Select;
 const NewTeacherRobot = (props) => {
@@ -138,26 +139,34 @@ const NewTeacherRobot = (props) => {
             >
                 <Input.TextArea placeholder="设定机器人的行为并告知他们如何回应用户消息，请尽可能详细说明" rows={4} />
             </Form.Item>
-            <Form.Item
-                name="finishTime"
-                label="结束时间"
-                initialValue={finishTime}
-                rules={[{ required: true, message: '请选择结束时间' }]}
-            >
-                <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" onChange={handleFinishTimeChange}/>
-            </Form.Item>
-            <Form.Item
-                name="user_type"
-                label="机器人创建服务对象"
-                initialValue={isTeacherService ? 'teacher' : 'teacher'}
-            >
-                <Input disabled defaultValue={isTeacherService ? '老师' : '学生'} /> {/* 根据路径设置服务对象 */}
-            </Form.Item>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <ClockCircleTwoTone style={{ marginRight: '8px' ,marginBottom:22}} />
+                <Form.Item
+                    name="finishTime"
+                    label="结束时间"
+                    initialValue={finishTime}
+                    rules={[{ required: true, message: '请选择结束时间' }]}
+                >
+                    <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" onChange={handleFinishTimeChange}/>
+                </Form.Item>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <SmileTwoTone style={{ marginRight: '8px' ,marginBottom:22}} />
+                <Form.Item
+                    name="user_type"
+                    label="机器人创建服务对象"
+                    initialValue={isTeacherService ? 'teacher' : 'teacher'}
+                >
+                    <Input disabled defaultValue={isTeacherService ? '老师' : '学生'} /> {/* 根据路径设置服务对象 */}
+                </Form.Item>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
             <Form.Item>
-                <Button type="primary" htmlType="submit" loading={loading}>
+                <Button type="primary" htmlType="submit" loading={loading} style={{justifyContent: 'center' }}>
                     创建机器人
                 </Button>
             </Form.Item>
+            </div>
         </Form>
     );
 };

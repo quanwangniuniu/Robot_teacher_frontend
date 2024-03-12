@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Avatar, Row, Col, Menu, Dropdown, Button, Modal, Form, Input, Select, Empty, message} from 'antd';
-import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
+import {Avatar, Row, Col, Button, Modal, Form, Input, Select, Empty, message} from 'antd';
+import {  PlusOutlined } from '@ant-design/icons';
 import axios from "axios";
 import config from "../../api/config";
+import {useNavigate} from "react-router-dom";
 
 
 const StudentClassroom = () => {
@@ -21,7 +22,10 @@ const StudentClassroom = () => {
                 console.error('Error fetching classrooms:', error);
             });
     }, []);
-
+    const navigate = useNavigate()
+    const navigateToClass = (class_id) => {
+        navigate(`/studentIndex/student_classroom_chat/${class_id}`,{replace:true})
+    };
     const refreshData = () => {
         // 更新状态以触发重新渲染
         setClassrooms([]);
@@ -114,8 +118,7 @@ const StudentClassroom = () => {
                             <div style={{ textAlign: 'center' }}>
                                 <Avatar size={100} src={cls.class_avatar} style={{borderColor:"black",border:2}}/>
                                 <h3>{cls.class_name}</h3>
-                                <a href={`#class/${cls.class_id}`}>查看详情</a>
-                            </div>
+                                <Button onClick={() => navigateToClass(cls.class_id)}>查看详情</Button>                            </div>
                         </Col>
                     ))}
                 </Row>

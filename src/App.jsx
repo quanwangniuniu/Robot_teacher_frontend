@@ -32,6 +32,7 @@ import TeacherRobot from "./pages/teacher/RobotTeacher";
 import TeacherClassroom from "./conponents/TeacherHandler/TeacherClassroom";
 import TeacherClassroomChat from "./conponents/TeacherHandler/TeacherClassroomChat";
 import StudentClassroom from "./conponents/StudentHandler/StudentClassroom";
+import StudentClassroomChat from "./conponents/StudentHandler/StudentClassroomChat";
 
 
 
@@ -58,6 +59,7 @@ function App() {
                         <Route path={'student_linechart'} element={<LineChart/>}></Route>
                         <Route path={'student_newRobot'} element={<NewRobot/>}></Route>
                         <Route path={'student_classroom'} element={<StudentClassroom/>}></Route>
+                        <Route path={'student_classroom_chat/:class_id'} element={<StudentClassroomChat/>}></Route>
 
                     </>
                 }>
