@@ -1,6 +1,6 @@
-// TeacherProfile.js
+// studentProfile.js
 import React, {useEffect, useState} from 'react';
-import {Badge, Button, Descriptions, Flex, Form, Modal, Input, message} from 'antd';
+import {Badge, Button, Descriptions, Flex, Form, Modal, Input, message, Avatar} from 'antd';
 import config from "../../api/config";
 import axios from 'axios'
 import {useNavigate} from 'react-router-dom'
@@ -10,6 +10,36 @@ const StudentProfile = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     // 注销功能
     const navigate = useNavigate();
+    const [previewVisible, setPreviewVisible] = useState(false);
+    const [selectedSeed, setSelectedSeed] = useState(1);
+
+    const handleAvatarClick = () => {
+        setPreviewVisible(true);
+    };
+
+    const handlePreviewCancel = () => {
+        setPreviewVisible(false);
+    };
+
+    const handleSeedChange = (seed) => {
+        setSelectedSeed(seed);
+        studentData.student_avatar = "https://api.dicebear.com/7.x/miniavs/svg?seed="+seed
+    };
+
+    const handleSaveAvatar = () => {
+        const student_id = sessionStorage.getItem('student_id')
+        axios.post(`${config.apiUrl}/studenthandler/update_studentAvatar_by_id/${student_id}/`,selectedSeed)
+            .then((response)=>{
+                    setIsModalOpen(false)
+                    message.success("头像修改成功")
+                }
+            )
+            .catch((error)=>{
+                message.error("头像修改失败")
+            })
+
+        setPreviewVisible(false);
+    };
     const Logout = ()=> {
         // 清除浏览器session中的值
         sessionStorage.clear();
@@ -154,7 +184,35 @@ const StudentProfile = () => {
     return (
         < >
             {contextHolder}
-            <Descriptions title="User Info" layout="vertical" bordered items={items}/>
+            <Avatar src={studentData.student_avatar} size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }} style={{ border: '2px solid #fff', borderRadius: '50%',cursor: 'pointer' }} onClick={handleAvatarClick} />
+            <div>
+                <Modal
+                    visible={previewVisible}
+                    onCancel={handlePreviewCancel}
+                    footer={[
+                        <Button key="back" onClick={handlePreviewCancel}>
+                            取消
+                        </Button>,
+                        <Button key="save" type="primary" onClick={handleSaveAvatar}>
+                            保存
+                        </Button>,
+                    ]}
+                    width={800} // 设置 Modal 的宽度为 800px
+                >
+                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+                        {[...Array(100).keys()].map((seed) => (
+                            <Avatar
+                                key={seed}
+                                src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${seed + 1}`}
+                                size={64}
+                                style={{ margin: '8px', cursor: 'pointer' }}
+                                onClick={() => handleSeedChange(seed + 1)}
+                            />
+                        ))}
+                    </div>
+                </Modal>
+            </div>
+            <Descriptions  layout="vertical" bordered items={items}/>
             <Modal title="学生信息修改" open={isModalOpen} onCancel={handleCancel} footer={null}>
                 <Form
                     name="用户信息修改"

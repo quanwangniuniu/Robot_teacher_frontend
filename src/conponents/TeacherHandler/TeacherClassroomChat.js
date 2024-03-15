@@ -18,7 +18,15 @@ const TeacherClassroomChat = () => {
     // 消息列表
     const { messages, appendMsg, setTyping } = useMessages([]);
     useEffect(() => {
-        // 发送HTTP请求
+        // 获得标签信息
+        axios.get(`${config.apiUrl}/classroomhandler/substract_tags/`)
+            .then(response => {
+                console.log(response.data)
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error);
+            });
+        // 获得用户信息
         axios.get(`${config.apiUrl}/classroomhandler/get_users_in_classrooms/${class_id}/`)
             .then(response => {
                 setUsersData(response.data.users_info);
@@ -69,20 +77,20 @@ const TeacherClassroomChat = () => {
     const defaultQuickReplies = [
         {
             icon: 'message',
-            name: '联系人工服务',
+            name: '关键字1',
             isNew: true,
             isHighlight: true,
         },
         {
-            name: '短语1',
+            name: '关键字2',
             isNew: true,
         },
         {
-            name: '短语2',
+            name: '关键字3',
             isHighlight: true,
         },
         {
-            name: '短语3',
+            name: '关键字4',
         },
     ];
 
