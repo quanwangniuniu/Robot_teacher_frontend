@@ -25,7 +25,6 @@ import ApplicationStatics from "./conponents/ApplicationStatics/Application_stat
 import StudentManage from "./conponents/AdminHandler/StudentManage";
 import TeacherManage from "./conponents/AdminHandler/TeacherManage";
 import RobotManage from "./conponents/AdminHandler/RobotManage";
-import MessagesManage from "./conponents/AdminHandler/MessagesManage"
 import NotFoundPage from "./pages/NotFoundPage";
 import NewTeacherRobot from "./conponents/NewRobot/NewTeacherRobot";
 import TeacherRobot from "./pages/teacher/RobotTeacher";
@@ -33,6 +32,7 @@ import TeacherClassroom from "./conponents/TeacherHandler/TeacherClassroom";
 import TeacherClassroomChat from "./conponents/TeacherHandler/TeacherClassroomChat";
 import StudentClassroom from "./conponents/StudentHandler/StudentClassroom";
 import StudentClassroomChat from "./conponents/StudentHandler/StudentClassroomChat";
+import ClassManage from "./conponents/AdminHandler/ClassManage";
 
 
 
@@ -91,7 +91,7 @@ function App() {
                         <Route path={"student_manage"} element={<StudentManage/>}></Route>
                         <Route path={"teacher_manage"} element={<TeacherManage/>}></Route>
                         <Route path={"robot_manage"} element={<RobotManage/>}></Route>
-                        <Route path={"messages_manage"} element={<MessagesManage/>}></Route>
+                        <Route path={"class_manage"} element={<ClassManage/>}></Route>
                     </>
                 }>
                 </Route>

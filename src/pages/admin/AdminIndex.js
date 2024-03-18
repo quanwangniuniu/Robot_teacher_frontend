@@ -13,6 +13,7 @@ import TeacherManage from "../../conponents/AdminHandler/TeacherManage"
 import ApplicationStatics from "../../conponents/ApplicationStatics/Application_statics";
 import AdminNavibars from "../../conponents/AdminNavi/AdminNavi";
 import RobotManage from "../../conponents/AdminHandler/RobotManage";
+import ClassManage from "../../conponents/AdminHandler/ClassManage";
 
 
 
@@ -37,7 +38,7 @@ const AdminIndex = () => {
         getItem('系统使用统计', 'application_statics', <PieChartOutlined/>),
         getItem('应用管理', 'sub3', <AppstoreOutlined />,[
             getItem('聊天机器人管理','robot_manage'),
-            getItem('消息管理','messages_manage'),
+            getItem('班级管理','class_manage'),
         ]),
     ];
 
@@ -95,9 +96,9 @@ const AdminIndex = () => {
                                 <Route exact path="teacher_manage" element={<TeacherManage/>}></Route>
                                 {/* 系统使用统计 */}
                                 <Route exact path="application_statics" element={<ApplicationStatics/>}></Route>
-                                {/* 机器人管理模块 */}
+                                {/* 应用管理模块 */}
                                 <Route exact path="robot_manage" element={<RobotManage/>}/>
-                                <Route exact path="messages_manage" element={<MessagesManage/>}/>
+                                <Route exact path="class_manage" element={<ClassManage/>}/>
                             </Routes>
                         </div>
                     </Content>
