@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import {Table, Button, Modal, Form, Input, Space, Select, message} from 'antd';
+import {Table, Button, Modal, Form, Input, Space, Select, message, Avatar, Badge} from 'antd';
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import config from "../../api/config";
 
 const { Option } = Select;
 
-const StudentManage = () => {
+const ClassManage = () => {
     const [data, setData] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isAddModalVisible,setIsAddModalVisible] = useState(false);
@@ -18,7 +18,7 @@ const StudentManage = () => {
         // Fetch data from backend here
         const fetchData = async () => {
             // Example: Replace this with your actual fetch logic
-            const response = await fetch(`${config.apiUrl}/adminhandler/get_all_students/`);
+            const response = await fetch(`${config.apiUrl}/adminhandler/get_all_class/`);
             const responseData = await response.json();
             setData(responseData);
         };
@@ -29,48 +29,42 @@ const StudentManage = () => {
     const handleDelete = (record) => {
         // Delete record logic here
         const newData = [...data];
-        const index = newData.findIndex((item) => record.student_id === item.student_id);
+        const index = newData.findIndex((item) => record.class_id === item.class_id);
         newData.splice(index, 1);
         setData(newData);
     };
 
     const handleEdit = (record) => {
         form.setFieldsValue(record);
-        setEditingKey(record.student_id);
+        setEditingKey(record.class_id);
         setIsModalVisible(true);
     };
 
     const columns = [
         {
-            title: 'Student ID',
-            dataIndex: 'student_id',
-            sorter: (a, b) => a.student_id - b.student_id,
+            title: 'Class Room ID',
+            dataIndex: 'class_id',
+            sorter: (a, b) => a.class_id - b.class_id,
         },
         {
-            title: 'Username',
-            dataIndex: 'username',
-            sorter: (a, b) => a.username.localeCompare(b.username),
+            title: 'Class Room Name',
+            dataIndex: 'class_name',
+            sorter: (a, b) => a.class_name.localeCompare(b.class_name),
         },
         {
-            title: 'Phone Number',
-            dataIndex: 'phone_number',
+            title: 'Class Room Avatar',
+            dataIndex: 'class_avatar',
+            render: (text) => (
+                <Avatar src={text} />
+            ),
         },
         {
-            title: 'Email',
-            dataIndex: 'email',
+            title: 'Class Type',
+            render: (text) => ("普通班级"),
         },
         {
-            title: 'Is Active',
-            dataIndex: 'is_active',
-            render: (text) => (text ? 'Active' : 'Inactive'),
-        },
-        {
-            title: 'Last Login Time',
-            dataIndex: 'last_login_time',
-        },
-        {
-            title: 'In Class',
-            dataIndex: 'in_class',
+            title: '状态',
+            render:(text)=>(<Badge status={ 'processing'} />),
         },
         {
             title: 'Action',
@@ -87,14 +81,14 @@ const StudentManage = () => {
     const handleOk = () => {
         form.validateFields().then((values) => {
             const newData = [...data];
-            const index = newData.findIndex((item) => editingKey === item.student_id);
+            const index = newData.findIndex((item) => editingKey === item.class_id);
             if (index > -1) {
                 // Update frontend data
                 newData[index] = { ...newData[index], ...values };
                 setData(newData);
 
                 // Send PUT request to update backend data
-                fetch(`${config.apiUrl}/adminhandler/edit_student/${editingKey}`, {
+                fetch(`${config.apiUrl}/adminhandler/edit_class/${editingKey}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -108,7 +102,7 @@ const StudentManage = () => {
                         return response.json();
                     })
                     .then(data => {
-                        console.log('Updated student data:', data);
+                        console.log('Updated classroom data:', data);
                     })
                     .catch(error => {
                         console.error('Error updating student data:', error);
@@ -122,7 +116,7 @@ const StudentManage = () => {
     const handleAddOk = () => {
         addForm.validateFields().then((values) => {
             // Send PUT request to update backend data
-            fetch(`${config.apiUrl}/adminhandler/add_student/`, {
+            fetch(`${config.apiUrl}/adminhandler/add_class/`, {
                 method: 'Post',
                 headers: {
                     'Content-Type': 'application/json',
@@ -137,7 +131,7 @@ const StudentManage = () => {
                 })
                 .then(data => {
                     // 弹出成功提示
-                    message.success('Student added successfully');
+                    message.success('ClassRoom added successfully');
                     // 重置表单
                     addForm.resetFields();
                     // 关闭弹窗
@@ -146,7 +140,7 @@ const StudentManage = () => {
                     window.location.reload();
                 })
                 .catch(error => {
-                    console.error('Error updating student data:', error);
+                    console.error('Error updating classroom data:', error);
                 });
             addForm.resetFields();
             setIsAddModalVisible(false);
@@ -172,7 +166,7 @@ const StudentManage = () => {
                 style={{ marginBottom: 16 }}
                 onClick={() => setIsAddModalVisible(true)}
             >
-                添加学生
+                添加班级
             </Button>
             <Table
                 dataSource={data}
@@ -180,62 +174,45 @@ const StudentManage = () => {
                 rowKey={(record) => record.student_id}
                 pagination={{ pageSize: 10 }}
             />
-            <Modal title="编辑学生信息" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+            <Modal title="编辑班级信息" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                 <Form form={form} layout="vertical">
-                    <Form.Item name="student_id" label="Student ID" hidden>
+                    <Form.Item name="class_id" label="班级ID" hidden>
                         <Input disabled />
                     </Form.Item>
-                    <Form.Item name="username" label="Username">
+                    <Form.Item name="class_name" label="班级名">
                         <Input />
                     </Form.Item>
-                    <Form.Item name="phone_number" label="Phone Number">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="email" label="Email">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="is_active" label="Is Active">
+                    <Form.Item name="class_avatar" label="班级头像">
                         <Select>
-                            <Option value={true}>Active</Option>
-                            <Option value={false}>Inactive</Option>
+                            <Option value={"https://robohash.org/lion "}>狮子</Option>
+                            <Option value={"https://robohash.org/monkey "}>猴子</Option>
+                            <Option value={"https://robohash.org/tree "}>大树</Option>
+                            <Option value={"https://robohash.org/pandas "}>熊猫</Option>
+                            <Option value={"https://robohash.org/duck "}>鸭子</Option>
+                            <Option value={"https://robohash.org/robot "}>机器人</Option>
+                            <Option value={"https://robohash.org/rabbit "}>兔子</Option>
                         </Select>
-                    </Form.Item>
-                    <Form.Item name="last_login_time" label="Last Login Time">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="in_class" label="In Class">
-                        <Input />
                     </Form.Item>
                 </Form>
             </Modal>
-            <Modal title="添加学生" visible={isAddModalVisible} onOk={handleAddOk} onCancel={handleAddCancel}>
+            <Modal title="添加班级" visible={isAddModalVisible} onOk={handleAddOk} onCancel={handleAddCancel}>
                 <Form form={addForm} layout="vertical">
-                    <Form.Item name="student_id" label="Student ID" hidden>
+                    <Form.Item name="class_id" label="Class ID" hidden>
                         <Input disabled />
                     </Form.Item>
-                    <Form.Item name="username" label="Username">
+                    <Form.Item name="class_name" label="班级名称">
                         <Input />
                     </Form.Item>
-                    <Form.Item name="password" label="Password">
-                        <Input></Input>
-                    </Form.Item>
-                    <Form.Item name="phone_number" label="Phone Number">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="email" label="Email">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="is_active" label="Is Active">
+                    <Form.Item name="class_avatar" label="班级头像">
                         <Select>
-                            <Option value={true}>Active</Option>
-                            <Option value={false}>Inactive</Option>
+                            <Option value={"https://robohash.org/lion "}>狮子</Option>
+                            <Option value={"https://robohash.org/monkey "}>猴子</Option>
+                            <Option value={"https://robohash.org/tree "}>大树</Option>
+                            <Option value={"https://robohash.org/pandas "}>熊猫</Option>
+                            <Option value={"https://robohash.org/duck "}>鸭子</Option>
+                            <Option value={"https://robohash.org/robot "}>机器人</Option>
+                            <Option value={"https://robohash.org/rabbit "}>兔子</Option>
                         </Select>
-                    </Form.Item>
-                    <Form.Item name="last_login_time" label="Last Login Time">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="in_class" label="In Class">
-                        <Input />
                     </Form.Item>
                 </Form>
             </Modal>
@@ -243,4 +220,4 @@ const StudentManage = () => {
     );
 };
 
-export default StudentManage;
+export default ClassManage;
