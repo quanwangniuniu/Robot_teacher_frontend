@@ -33,6 +33,8 @@ import TeacherClassroomChat from "./conponents/TeacherHandler/TeacherClassroomCh
 import StudentClassroom from "./conponents/StudentHandler/StudentClassroom";
 import StudentClassroomChat from "./conponents/StudentHandler/StudentClassroomChat";
 import ClassManage from "./conponents/AdminHandler/ClassManage";
+import StudentSetting from "./conponents/StudentHandler/StudentSetting";
+import TeacherSetting from "./conponents/TeacherHandler/TeacherSetting";
 
 
 
@@ -59,6 +61,7 @@ function App() {
                         <Route path={'student_linechart'} element={<LineChart/>}></Route>
                         <Route path={'student_newRobot'} element={<NewRobot/>}></Route>
                         <Route path={'student_classroom'} element={<StudentClassroom/>}></Route>
+                        <Route path={'student_settings'} element={<StudentSetting/>}></Route>
                         <Route path={'student_classroom_chat/:class_id'} element={<StudentClassroomChat/>}></Route>
 
                     </>
@@ -80,7 +83,7 @@ function App() {
                         <Route path={'teacher_newRobot'} element={<NewTeacherRobot/>}></Route>
                         <Route path={'teacher_classroom'} element={<TeacherClassroom/>}></Route>
                         <Route path={'teacher_classroom_chat/:class_id'} element={<TeacherClassroomChat/>}></Route>
-
+                        <Route path={'teacher_settings'} element={<TeacherSetting/>}></Route>
                         <Route path={'teacher_robot/:robotId/:robotRole'} element={<TeacherRobot/>}></Route>
                     </>
                 }>

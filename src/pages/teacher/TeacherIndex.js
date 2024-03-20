@@ -27,6 +27,7 @@ import config from "../../api/config";
 import TeacherRobot from "./RobotTeacher";
 import TeacherClassroom from "../../conponents/TeacherHandler/TeacherClassroom";
 import TeacherClassroomChat from "../../conponents/TeacherHandler/TeacherClassroomChat";
+import TeacherSetting from "../../conponents/TeacherHandler/TeacherSetting";
 
 
 const TeacherIndex = () => {
@@ -63,7 +64,7 @@ const TeacherIndex = () => {
             getItem('创建机器人','teacher_newRobot'),
             getItem('使用统计', '2'),
             getItem('班级管理','teacher_classroom'),
-            getItem('设置','6')
+            getItem('设置','teacher_settings')
         ]),
         getItem('图表生成', 'sub2', <PieChartOutlined/>, [
             getItem('饼图生成', 'teacher_piechart'),
@@ -138,6 +139,7 @@ const TeacherIndex = () => {
                                 <Route exact path="teacher_profile" element={<TeacherProfile/>}></Route>
                                 <Route exact path="teacher_newRobot" element={<NewTeacherRobot/>}></Route>
                                 <Route exact path="teacher_classroom" element={<TeacherClassroom/>}></Route>
+                                <Route exact path="teacher_settings" element={<TeacherSetting/>}></Route>
                                 <Route exact path="teacher_classroom_chat/:class_id" element={<TeacherClassroomChat/>}></Route>
                                 {/* 文件转换模块 */}
                                 {/* 图表生成模块 */}
