@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 import {Breadcrumb, Layout, Menu, theme} from 'antd';
 import {Route, Routes} from "react-router-dom";
-import MessagesManage from '../../conponents/AdminHandler/MessagesManage'
+import ModelManage from "../../conponents/AdminHandler/ModelManage"
 import StudentManage from "../../conponents/AdminHandler/StudentManage"
 import TeacherManage from "../../conponents/AdminHandler/TeacherManage"
 import ApplicationStatics from "../../conponents/ApplicationStatics/Application_statics";
@@ -39,6 +39,7 @@ const AdminIndex = () => {
         getItem('应用管理', 'sub3', <AppstoreOutlined />,[
             getItem('聊天机器人管理','robot_manage'),
             getItem('班级管理','class_manage'),
+            getItem('大语言模型参数设置','model_manage'),
         ]),
     ];
 
@@ -99,6 +100,7 @@ const AdminIndex = () => {
                                 {/* 应用管理模块 */}
                                 <Route exact path="robot_manage" element={<RobotManage/>}/>
                                 <Route exact path="class_manage" element={<ClassManage/>}/>
+                                <Route exact path="model_manage" element={<ModelManage/>}></Route>
                             </Routes>
                         </div>
                     </Content>

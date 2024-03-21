@@ -17,7 +17,6 @@ const ClassManage = () => {
     useEffect(() => {
         // Fetch data from backend here
         const fetchData = async () => {
-            // Example: Replace this with your actual fetch logic
             const response = await fetch(`${config.apiUrl}/adminhandler/get_all_class/`);
             const responseData = await response.json();
             setData(responseData);

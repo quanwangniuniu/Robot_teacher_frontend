@@ -35,6 +35,7 @@ import StudentClassroomChat from "./conponents/StudentHandler/StudentClassroomCh
 import ClassManage from "./conponents/AdminHandler/ClassManage";
 import StudentSetting from "./conponents/StudentHandler/StudentSetting";
 import TeacherSetting from "./conponents/TeacherHandler/TeacherSetting";
+import ModelManage from "./conponents/AdminHandler/ModelManage";
 
 
 
@@ -95,6 +96,7 @@ function App() {
                         <Route path={"teacher_manage"} element={<TeacherManage/>}></Route>
                         <Route path={"robot_manage"} element={<RobotManage/>}></Route>
                         <Route path={"class_manage"} element={<ClassManage/>}></Route>
+                        <Route path={"model_manage"} element={<ModelManage/>}></Route>
                     </>
                 }>
                 </Route>
