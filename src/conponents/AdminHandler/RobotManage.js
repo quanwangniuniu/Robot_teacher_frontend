@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {Table, Button, Modal, Form, Input, Select, message} from 'antd';
+import {Table, Button, Modal, Form, Input, message, Rate} from 'antd';
 import axios from 'axios';
 import config from "../../api/config";
 
 
 const RobotManage = () => {
-    const { Option } = Select;
     const [data, setData] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedRow, setSelectedRow] = useState(null);
     const [form] = Form.useForm();
 
     useEffect(() => {
@@ -34,7 +32,6 @@ const RobotManage = () => {
     };
 
     const handleEdit = (record) => {
-        setSelectedRow(record);
         form.setFieldsValue(record);
         setModalVisible(true);
     };
@@ -86,6 +83,13 @@ const RobotManage = () => {
             title: 'Robot Model',
             dataIndex: 'robot_model',
             key: 'robot_model',
+            render: (text) => {
+                if (text === 'qwen-max') {
+                    return 'meicy-1.0B';
+                } else {
+                    return "qwen-max";
+                }
+            }
         },
         {
             title: 'Robot Prompt',
@@ -98,13 +102,21 @@ const RobotManage = () => {
             key: 'roles',
         },
         {
+            title: 'Rates',
+            dataIndex: 'rate',
+            key: 'rate',
+            render:(rate)=>(
+                <Rate allowHalf value={rate} disabled/>
+            ),
+        },
+        {
             title: 'Action',
             key: 'action',
             render: (text, record) => (
                 <span>
-          <Button onClick={() => handleEdit(record)}>修改</Button>
-          <Button style={{color:"yellow",backgroundColor:"black"}} onClick={() => handleDelete(record)}>删除</Button>
-        </span>
+                  <Button onClick={() => handleEdit(record)}>修改</Button>
+                  <Button style={{color:"yellow",backgroundColor:"black"}} onClick={() => handleDelete(record)}>删除</Button>
+                </span>
             ),
         },
     ];

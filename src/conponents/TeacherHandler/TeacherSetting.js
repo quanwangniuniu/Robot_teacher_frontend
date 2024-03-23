@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Table, Button, Modal, Form, Input, message} from 'antd';
+import {Table, Button, Modal, Form, Input, message, Rate} from 'antd';
 import axios from 'axios';
 import config from "../../api/config";
 
@@ -7,7 +7,6 @@ import config from "../../api/config";
 const TeacherSetting = () => {
     const [data, setData] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedRow, setSelectedRow] = useState(null);
     const [form] = Form.useForm();
 
     useEffect(() => {
@@ -34,7 +33,6 @@ const TeacherSetting = () => {
     };
 
     const handleEdit = (record) => {
-        setSelectedRow(record);
         form.setFieldsValue(record);
         setModalVisible(true);
     };
@@ -106,6 +104,14 @@ const TeacherSetting = () => {
             key: 'roles',
         },
         {
+            title: 'Rate',
+            dataIndex: 'rate',
+            key: 'rate',
+            render:(rate)=>(
+                <Rate allowHalf value={rate} disabled/>
+            ),
+        },
+        {
             title: 'Action',
             key: 'action',
             render: (text, record) => (
@@ -153,10 +159,13 @@ const TeacherSetting = () => {
                         <Input disabled/>
                     </Form.Item>
                     <Form.Item name="robot_prompt" label="Robot Prompt">
-                        <Input />
+                        <Input.TextArea rows={8}/>
                     </Form.Item>
                     <Form.Item name="roles" label="Roles">
                         <Input />
+                    </Form.Item>
+                    <Form.Item name="rate" label="Rate">
+                        <Rate allowHalf/>
                     </Form.Item>
                 </Form>
             </Modal>

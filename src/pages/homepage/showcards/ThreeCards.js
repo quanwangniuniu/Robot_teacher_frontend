@@ -22,7 +22,6 @@ const alignOptions = ['flex-start', 'center', 'flex-end'];
 const ThreeCards = () => {
     return (
         <div className="cardContainer">
-            <h1>登录端口</h1>
             <Flex gap="middle" align="start" vertical>
                 <Flex style={boxStyle} justify={justifyOptions[1]} align={alignOptions[1]}>
                     {/* 学生端 */}
