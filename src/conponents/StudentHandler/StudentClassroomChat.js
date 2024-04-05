@@ -10,14 +10,16 @@ import {LeftOutlined} from "@ant-design/icons";
 const StudentClassroomChat = () => {
     const [users_data,setUsersData] = useState([])
     const [classroom_name,setClassRoomName] = useState()
+    const [current_student_avatar,SetCurrent_student_avatar] = useState()
 
     const location = useLocation();
     const pathname = location.pathname;
     // 使用字符串处理方法提取最后一个斜杠后面的内容
     const class_id= pathname.substring(pathname.lastIndexOf('/') + 1);
     // 消息列表
-    const { messages, appendMsg, setTyping } = useMessages([]);
+    const { messages, appendMsg} = useMessages([]);
     useEffect(() => {
+        const student_id = sessionStorage.getItem('student_id')
         // 发送HTTP请求
         axios.get(`${config.apiUrl}/classroomhandler/get_users_in_classrooms/${class_id}/`)
             .then(response => {
@@ -33,6 +35,14 @@ const StudentClassroomChat = () => {
             })
             .catch(error => {
                 console.error('Error fetching users:', error);
+            });
+        // 获得当前学生用户头像
+        axios.get(`${config.apiUrl}/classroomhandler/get_student_avatar/${student_id}/`)
+            .then(response => {
+                SetCurrent_student_avatar(response.data)
+            })
+            .catch(error => {
+                console.error('Error fetching avatar:', error);
             });
         // 获得当前班级所有消息
         // 清空先前的对话内容
@@ -102,7 +112,7 @@ const StudentClassroomChat = () => {
                 type: 'text',
                 content: {text: val},
                 position: 'right',
-                user: { avatar: 'https://robohash.org/duck' },
+                user: { avatar: current_student_avatar },
             });
         }
     }
@@ -158,7 +168,7 @@ const StudentClassroomChat = () => {
                         renderItem={(item, index) => (
                             <List.Item>
                                 <List.Item.Meta
-                                    avatar={<Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`} />}
+                                    avatar={<Avatar src={item.avatar} />}
                                     title={<a href="https://ant.design">{item.user_name}</a>}
                                     description ={item.user_email}
                                 />
