@@ -70,6 +70,8 @@ const NewRobot = (props) => {
                 <Select placeholder="请选择模型">
                     <Option value="qwen-max">Meicy-1.8B</Option>
                     <Option value="qwen-2b">qwen-2b</Option>
+                    <Option value="qwen-turbo">qwen-turbo</Option>
+                    <Option value="qwen-plus">qwen-plus</Option>
                 </Select>
             </Form.Item>
             <Form.Item
