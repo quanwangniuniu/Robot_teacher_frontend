@@ -84,10 +84,10 @@ const RobotManage = () => {
             dataIndex: 'robot_model',
             key: 'robot_model',
             render: (text) => {
-                if (text === 'qwen-max') {
+                if (text === 'qwen-turbo') {
                     return 'meicy-1.0B';
                 } else {
-                    return "qwen-max";
+                    return "qwen-turbo";
                 }
             }
         },

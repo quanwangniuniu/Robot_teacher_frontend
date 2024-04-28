@@ -85,11 +85,11 @@ const TeacherSetting = () => {
             dataIndex: 'robot_model',
             key: 'robot_model',
             render: (text) => {
-                if (text === 'qwen-max') {
+                if (text === 'qwen-turbo') {
                     return 'meicy-1.0B';
                 } else {
                     // 其他情况的渲染逻辑
-                    return "qwen-max"; // 或者返回其他需要显示的内容
+                    return "qwen-turbo"; // 或者返回其他需要显示的内容
                 }
             }
         },
