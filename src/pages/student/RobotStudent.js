@@ -4,13 +4,24 @@ import '@chatui/core/dist/index.css';
 import axios from "axios";
 import config from "../../api/config";
 import {useParams} from "react-router-dom";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 const StudentRobot = () => {
     const {robotId,robotRole} = useParams();
+    const [current_student_avatar,SetCurrent_student_avatar] = useState()
     // 消息列表
     const { messages, appendMsg, setTyping } = useMessages([]);
     useEffect(() => {
+        // 获得当前用户头像信息
+        const student_id = sessionStorage.getItem('student_id')
+        // 获得当前学生用户头像
+        axios.get(`${config.apiUrl}/classroomhandler/get_student_avatar/${student_id}/`)
+            .then(response => {
+                SetCurrent_student_avatar(response.data)
+            })
+            .catch(error => {
+                console.error('Error fetching avatar:', error);
+            });
         // 清空先前的对话内容
         messages.length = 0
         axios.get(`${config.apiUrl}/conversationhandler/get_messages_by_robot_id/${robotId}`)
@@ -84,7 +95,7 @@ const StudentRobot = () => {
                 type: 'text',
                 content: {text: val},
                 position: 'right',
-                user: { avatar: 'https://robohash.org/duck' },
+                user: { avatar: current_student_avatar },
             });
 
             setTyping(true);

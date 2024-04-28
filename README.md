@@ -68,3 +68,14 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+### RUN/Debug Configurations
+
++ Name:npm start
++ package.json: ..\robot-frontend\package.json
++ Command: run
++ Scripts: start
++ Node interpreter: ..\node\node-v18-15.0-win-x64\node.exe
++ Pakage manager: ~\AppData\Roaming\JetBrains\Webstorm2023.2\node-v18-15.0-win-x64\npm.cmd
+
