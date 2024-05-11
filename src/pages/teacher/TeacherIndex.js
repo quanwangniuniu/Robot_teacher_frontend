@@ -62,7 +62,7 @@ const TeacherIndex = () => {
         getItem('用户中心', 'sub1', <UserOutlined/>, [
             getItem('个人信息', 'teacher_profile'),
             getItem('创建机器人','teacher_newRobot'),
-            getItem('使用统计', '2'),
+            //getItem('使用统计', '2'),
             getItem('班级管理','teacher_classroom'),
             getItem('设置','teacher_settings')
         ]),

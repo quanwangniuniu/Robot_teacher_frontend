@@ -69,7 +69,7 @@ const NewTeacherRobot = (props) => {
                 rules={[{ required: true, message: '请选择模型' }]}
             >
                 <Select placeholder="请选择模型">
-                    <Option value="qwen-turbo">Meicy-1.8B</Option>
+                    <Option value="Meicy-1.8B">Meicy-1.8B</Option>
                     <Option value="qwen-2b">qwen-2b</Option>
                     <Option value="qwen-turbo">qwen-turbo</Option>
                     <Option value="qwen-plus">qwen-plus</Option>
